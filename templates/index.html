@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Pi Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="refresh" content="30">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Pi Dashboard</h1>
+      <p>Last refresh: {{ now }}</p>
+    </header>
+
+    <section class="cards">
+      <div class="card">
+        <h2>Uptime</h2>
+        <p>{{ uptime }}</p>
+      </div>
+
+      <div class="card">
+        <h2>CPU Temp</h2>
+        <p>{{ cpu_temp }}</p>
+      </div>
+
+      <div class="card">
+        <h2>Memory</h2>
+        <pre>{{ memory }}</pre>
+      </div>
+
+      <div class="card">
+        <h2>Disk</h2>
+        <p>{{ disk }}</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Services</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Unit</th>
+            <th>Active</th>
+            <th>Enabled</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for service in services %}
+          <tr>
+            <td>{{ service.name }}</td>
+            <td class="status {{ service.active }}">{{ service.active }}</td>
+            <td>{{ service.enabled }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>SoundCloud Timer</h2>
+      <pre class="log">{{ timer_info }}</pre>
+    </section>
+
+    {% for unit, log_text in logs.items() %}
+    <section>
+      <h2>{{ unit }} Logs</h2>
+      <pre class="log">{{ log_text }}</pre>
+    </section>
+    {% endfor %}
+  </main>
+</body>
+</html>
