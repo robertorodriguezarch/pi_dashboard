@@ -1,0 +1,15 @@
+[Unit]
+Description=Pi Dashboard
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+WorkingDirectory=/home/pi/pi_dashboard
+ExecStart=/home/pi/pi_dashboard/venv/bin/python /home/pi/pi_dashboard/app.py
+User=pi
+Restart=on-failure
+RestartSec=5
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target

@@ -12,6 +12,7 @@ app = Flask(__name__)
 
 
 SERVICES = [
+    "pi-dashboard.service",
     "ig-story-bot.service",
     "soundcloud-notifier.timer",
     "soundcloud-notifier.service",
