@@ -81,3 +81,24 @@ th {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 0.9rem;
 }
+
+.log-normal {
+  color: #cdd6f4;
+}
+
+.log-error {
+  color: #f38ba8;
+  font-weight: 700;
+}
+
+.log-warning {
+  color: #f9e2af;
+}
+
+.log-info {
+  color: #89b4fa;
+}
+
+.log-success {
+  color: #a6e3a1;
+}

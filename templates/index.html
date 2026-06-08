@@ -66,7 +66,7 @@
     {% for unit, log_text in logs.items() %}
     <section>
       <h2>{{ unit }} Logs</h2>
-      <pre class="log">{{ log_text }}</pre>
+      <pre class="log">{{ log_text | safe }}</pre>
     </section>
     {% endfor %}
   </main>

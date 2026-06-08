@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import html
 import shutil
 import subprocess
 from datetime import datetime
@@ -94,11 +95,31 @@ def get_logs(unit: str, lines: int = 25) -> str:
         ]
     )
 
+def colorize_logs(log_text: str) -> str:
+    colored_lines = []
+
+    for line in log_text.splitlines():
+        escaped_line = html.escape(line)
+        lower_line = line.lower()
+
+        if any(word in lower_line for word in ["error", "failed", "traceback", "exception", "login_required", "checkpoint", "challenge"]):
+            css_class = "log-error"
+        elif any(word in lower_line for word in ["warning", "skipping", "already seen", "no matching"]):
+            css_class = "log-warning"
+        elif any(word in lower_line for word in ["searching", "config loaded", "starting"]):
+            css_class = "log-info"
+        elif any(word in lower_line for word in ["success", "unfinished", "deactivated successfully", "new track", "new story"]):
+            css_class = "log-success"
+        else:
+            css_class = "log-normal"
+
+        colored_lines.append(f'<span class="{css_class}">{escaped_line}</span>')
+    return "\n".join(colored_lines)
 
 @app.route("/")
 def index():
     services = [get_service_status(unit) for unit in SERVICES]
-    logs = {unit: get_logs(unit) for unit in LOG_UNITS}
+    logs = {unit: colorize_logs(get_logs(unit)) for unit in LOG_UNITS}
 
     return render_template(
             "index.html",
