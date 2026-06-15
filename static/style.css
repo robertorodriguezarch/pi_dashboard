@@ -102,3 +102,15 @@ th {
 .log-success {
   color: #a6e3a1;
 }
+
+.timer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.timer-raw {
+  margin-top: 16px;
+  font-size: 0.8rem;
+  opacity: 0.8;
+}

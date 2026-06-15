@@ -59,8 +59,31 @@
     </section>
 
     <section>
-      <h2>SoundCloud Timer</h2>
-      <pre class="log">{{ timer_info }}</pre>
+  <h2>SoundCloud Timer</h2>
+
+  <div class="timer-grid">
+    <div class="card">
+      <h2>Next Run</h2>
+      <p>{{ soundcloud_timer.next }}</p>
+    </div>
+
+    <div class="card">
+      <h2>Time Left</h2>
+      <p>{{ soundcloud_timer.left }}</p>
+    </div>
+
+    <div class="card">
+      <h2>Last Run</h2>
+      <p>{{ soundcloud_timer.last }}</p>
+    </div>
+
+    <div class="card">
+      <h2>Last Passed</h2>
+      <p>{{ soundcloud_timer.passed }}</p>
+    </div>
+  </div>
+
+  <pre class="log timer-raw">{{ soundcloud_timer.raw }}</pre>
     </section>
 
     {% for unit, log_text in logs.items() %}

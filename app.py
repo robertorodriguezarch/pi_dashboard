@@ -92,6 +92,50 @@ def get_timer_info() -> str:
 
     return "soundcloud-notifier.timer was not found in systemctl list-timers."
 
+def get_soundcloud_timer_summary() -> dict[str, str]:
+    raw_line = get_timer_info()
+
+    if "soundcloud-notifier.timer" not in raw_line:
+        return {
+                "next": "Unknown",
+                "left": "Unknown",
+                "last": "Unknown",
+                "passed": "Unknown",
+                "unit": "soundcloud-notifier.timer",
+                "activates": "soundcloud-notifier.timer",
+                "raw": raw_line,
+            }
+    parts = raw_line.split()
+
+    try:
+        next_run = " ".join(parts[0:4])
+        left = parts[4]
+
+        unit_index = parts.index("soundcloud-notifier.timer")
+        activates = parts[units_index + 1] if len(parts) > unit_index + 1 else "Unknown"
+
+        last_run = " ".join(parts[5:9])
+        passed = " ".join(parts[9:unit_index])
+
+        return {
+            "next": "Unknown",
+            "left": "Unknown",
+            "last": "Unknown",
+            "passed": "Unknown",
+            "unit": "soundcloud-notifier.timer",
+            "activates": "soundcloud-notifier.timer",
+            "raw": raw_line,
+        }
+    except Exception:
+        return {
+            "next": "Unknown",
+            "left": "Unknown",
+            "last": "Unknown",
+            "passed": "Unknown",
+            "unit": "soundcloud-notifier.timer",
+            "activates": "soundcloud-notifier.timer",
+            "raw": raw_line,
+        }
 
 def get_logs(unit: str, lines: int = 25) -> str:
     return run_cmd(
@@ -143,6 +187,7 @@ def index():
             services=services,
             timer_info=get_timer_info(),
             logs=logs,
+            soundcloud_timer=get_soundcloud_timer_summary(),
         )
 
 if __name__ == "__main__":
