@@ -83,9 +83,13 @@ def get_service_status(unit: str) -> dict[str, str]:
 
 
 def get_timer_info() -> str:
-    return run_cmd(
-        ["systemctl", "list-timers", "--all", "--no-pager", "soundcloud-notifer.timer"]
-    )
+    output = run_cmd(["systemctl", "list-timers", "--all", "--no-pager", "--no-legend"])
+
+    for line in output.splitlines():
+        if "soundcloud-notifier.timer" in line:
+            return line
+
+    return "soundcloud-notifier.timer was not found in systemctl list-timers."
 
 
 def get_logs(unit: str, lines: int = 25) -> str:
