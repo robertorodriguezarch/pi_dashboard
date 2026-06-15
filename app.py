@@ -95,47 +95,37 @@ def get_timer_info() -> str:
 def get_soundcloud_timer_summary() -> dict[str, str]:
     raw_line = get_timer_info()
 
-    if "soundcloud-notifier.timer" not in raw_line:
-        return {
-                "next": "Unknown",
-                "left": "Unknown",
-                "last": "Unknown",
-                "passed": "Unknown",
-                "unit": "soundcloud-notifier.timer",
-                "activates": "soundcloud-notifier.timer",
-                "raw": raw_line,
-            }
-    parts = raw_line.split()
+    next_run = run_cmd(
+        [
+            "systemctl",
+            "show",
+            "soundcloud-notifier.timer",
+            "-p",
+            "NextElapseUSecRealtime",
+            "--value",
+        ]
+    )
 
-    try:
-        next_run = " ".join(parts[0:4])
-        left = parts[4]
+    last_run = run_cmd(
+        [
+            "systemctl",
+            "show",
+            "soundcloud-notifier.timer",
+            "-p",
+            "LastTriggerUSec",
+            "--value",
+        ]
+    )
 
-        unit_index = parts.index("soundcloud-notifier.timer")
-        activates = parts[units_index + 1] if len(parts) > unit_index + 1 else "Unknown"
-
-        last_run = " ".join(parts[5:9])
-        passed = " ".join(parts[9:unit_index])
-
-        return {
-            "next": "Unknown",
-            "left": "Unknown",
-            "last": "Unknown",
-            "passed": "Unknown",
-            "unit": "soundcloud-notifier.timer",
-            "activates": "soundcloud-notifier.timer",
-            "raw": raw_line,
-        }
-    except Exception:
-        return {
-            "next": "Unknown",
-            "left": "Unknown",
-            "last": "Unknown",
-            "passed": "Unknown",
-            "unit": "soundcloud-notifier.timer",
-            "activates": "soundcloud-notifier.timer",
-            "raw": raw_line,
-        }
+    return {
+        "next": next_run or "Unknown",
+        "left": "See raw timer line",
+        "last": last_run or "Unknown",
+        "passed": "See raw timer line",
+        "unit": "soundcloud-notifier.timer",
+        "activates": "soundcloud-notifier.service",
+        "raw": raw_line,
+    }
 
 def get_logs(unit: str, lines: int = 25) -> str:
     return run_cmd(
